@@ -1,0 +1,193 @@
+/* === BASE === */
+body {
+  font-family: 'Noto Sans', sans-serif;
+}
+
+/* === FOOTER === */
+.footer .icon-link {
+  font-size: 25px;
+  color: #000;
+}
+
+/* === LINK BUTTONS === */
+.link-block a {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+/* === PUBLICATION ELEMENTS === */
+.publication-title {
+  font-family: 'Google Sans', sans-serif;
+}
+.publication-authors {
+  font-family: 'Google Sans', sans-serif;
+}
+.publication-authors a {
+  color: hsl(204, 86%, 53%) !important;
+}
+.publication-authors a:hover {
+  text-decoration: underline;
+}
+.publication-venue {
+  color: #555;
+  width: fit-content;
+  font-weight: bold;
+}
+.author-block {
+  display: inline-block;
+}
+
+/* === SECTION HEADINGS === */
+.section-title {
+  font-family: 'Google Sans', sans-serif;
+  margin-bottom: 1rem;
+}
+
+/* === FIGURE STYLES === */
+.figure-container {
+  margin: 1.5rem 0;
+}
+.figure-container img {
+  border-radius: 8px;
+  max-width: 100%;
+  height: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+.figure-caption {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 0.75rem;
+  line-height: 1.5;
+  text-align: justify;
+}
+
+/* === HIGHLIGHT BOX === */
+.highlight-box {
+  background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+  border-left: 4px solid hsl(204, 86%, 53%);
+  border-radius: 0 8px 8px 0;
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+}
+.highlight-box p {
+  margin-bottom: 0.5rem;
+}
+.highlight-box p:last-child {
+  margin-bottom: 0;
+}
+
+/* === TABLE STYLES === */
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.95rem;
+}
+.styled-table thead th {
+  background-color: #f5f5f5;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid #ddd;
+}
+.styled-table tbody td {
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid #eee;
+}
+.styled-table tbody tr:hover {
+  background-color: #fafafa;
+}
+
+/* === BIBTEX === */
+#BibTeX pre {
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 1.25rem;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  border: 1px solid #e0e0e0;
+}
+
+/* === PIPELINE STEPS === */
+.pipeline-steps {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+.pipeline-step {
+  flex: 1;
+  min-width: 180px;
+  text-align: center;
+  padding: 1.25rem;
+  background: #f8f9ff;
+  border-radius: 10px;
+  border: 1px solid #e8ecf4;
+}
+.pipeline-step .step-number {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  border-radius: 50%;
+  background: hsl(204, 86%, 53%);
+  color: white;
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+}
+.pipeline-step .step-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+.pipeline-step .step-desc {
+  font-size: 0.85rem;
+  color: #666;
+  line-height: 1.4;
+}
+.pipeline-arrow {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  color: #ccc;
+  padding-top: 2rem;
+}
+
+/* === CONTRIBUTION TAGS === */
+.contrib-tag {
+  display: inline-block;
+  background: hsl(204, 86%, 93%);
+  color: hsl(204, 86%, 35%);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin: 0.25rem;
+}
+
+/* === RESULTS GRID === */
+.results-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+@media (max-width: 768px) {
+  .results-grid {
+    grid-template-columns: 1fr;
+  }
+  .pipeline-arrow {
+    display: none;
+  }
+}
+
+/* === SMOOTH HR === */
+hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #ddd, transparent);
+  margin: 2rem 0;
+}

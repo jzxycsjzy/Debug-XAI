@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Contrastive Attribution in the Wild: An Interpretability Analysis of LLM Failures on Realistic Benchmarks">
+  <meta name="keywords" content="contrastive attribution, LLM failures, interpretability, LRP, attribution graph, mechanistic interpretability, Qwen3">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Contrastive Attribution in the Wild</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans:400,500,600,700|Castoro&display=swap" rel="stylesheet">
+
+  <!-- Bulma CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css">
+
+  <!-- Academicons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.4/css/academicons.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x1F50D;</text></svg>">
+</head>
+
+<body>
+
+<!-- ========== HERO / TITLE ========== -->
+<section class="section" style="padding-bottom: 1rem;">
+  <div class="container is-max-desktop">
+
+    <h1 class="title is-2 has-text-centered publication-title" style="margin-bottom: 1.2rem;">
+      Contrastive Attribution in the Wild:<br>
+      <span style="font-size: 0.85em;">An Interpretability Analysis of LLM Failures on Realistic Benchmarks</span>
+    </h1>
+
+    <!-- Authors -->
+    <div class="content has-text-centered is-size-5 publication-authors">
+      <p>
+        <span class="author-block">Rongyuan Tan<sup>1*</sup>,</span>
+        <span class="author-block">Jue Zhang<sup>2&dagger;</sup>,</span>
+        <span class="author-block">Zhuozhao Li<sup>1&dagger;</sup>,</span>
+        <span class="author-block">Qingwei Lin<sup>2</sup>,</span>
+        <span class="author-block">Saravan Rajmohan<sup>2</sup>,</span>
+        <span class="author-block">Dongmei Zhang<sup>2</sup></span>
+      </p>
+      <p class="is-size-6" style="margin-top: -0.5rem;">
+        <sup>1</sup>Southern University of Science and Technology &nbsp;&nbsp;
+        <sup>2</sup>Microsoft
+      </p>
+      <p class="is-size-7" style="color: #777; margin-top: -0.5rem;">
+        <sup>*</sup>Work done during an internship at Microsoft. &nbsp;
+        <sup>&dagger;</sup>Corresponding authors.
+      </p>
+      <p class="is-size-6" style="margin-top: -0.3rem;">
+        <a href="mailto:juezhang@microsoft.com">juezhang@microsoft.com</a>,
+        <a href="mailto:lizz@sustech.edu.cn">lizz@sustech.edu.cn</a>
+      </p>
+    </div>
+
+    <!-- Buttons -->
+    <div class="has-text-centered" style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
+      <span class="link-block" style="margin-right: 0.5rem;">
+        <a class="button is-normal is-rounded is-dark" href="#" target="_blank" rel="noopener">
+          <span class="icon"><i class="ai ai-arxiv"></i></span>
+          <span>arXiv</span>
+        </a>
+      </span>
+      <span class="link-block" style="margin-right: 0.5rem;">
+        <a class="button is-normal is-rounded is-dark" href="https://anonymous.4open.science/r/contrastive_attribution_in_the_wild-7201/" target="_blank" rel="noopener">
+          <span class="icon"><i class="fab fa-github"></i></span>
+          <span>Code</span>
+        </a>
+      </span>
+      <span class="link-block">
+        <a class="button is-normal is-rounded is-dark" href="#" target="_blank" rel="noopener">
+          <span class="icon"><i class="fas fa-file-pdf"></i></span>
+          <span>Paper</span>
+        </a>
+      </span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========== ABSTRACT ========== -->
+<section class="section" style="padding-top: 0;">
+  <div class="container is-max-desktop">
+    <hr>
+    <div class="content">
+      <h2 class="title is-4 section-title">Abstract</h2>
+      <p style="text-align: justify;">
+        Interpretability tools are increasingly used to analyze failures of Large Language Models (LLMs), yet prior work largely focuses on short prompts or toy settings, leaving their behavior on commonly used benchmarks underexplored. To address this gap, we study contrastive, LRP-based attribution as a practical tool for analyzing LLM failures in realistic settings. We formulate failure analysis as <em>contrastive attribution</em>, attributing the logit difference between an incorrect output token and a correct alternative to input tokens and internal model states, and introduce an efficient extension that enables construction of cross-layer attribution graphs for long-context inputs. Using this framework, we conduct a systematic empirical study across benchmarks, comparing attribution patterns across datasets, model sizes, and training checkpoints. Our results show that this token-level contrastive attribution can yield informative signals in some failure cases, but is not universally applicable, highlighting both its utility and its limitations for realistic LLM failure analysis.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== KEY CONTRIBUTIONS ========== -->
+<section class="section" style="padding-top: 0;">
+  <div class="container is-max-desktop">
+    <hr>
+    <div class="content">
+      <h2 class="title is-4 section-title">Key Contributions</h2>
+      <div class="highlight-box">
+        <p><strong><i class="fas fa-check-circle" style="color: hsl(204, 86%, 53%);"></i> &nbsp;Problem Formulation:</strong> We formulate LLM failure analysis as a token-level <em>contrastive attribution</em> problem, enabling the application of model interpretability methods to analyze failures in more realistic settings than prior work.</p>
+        <p><strong><i class="fas fa-check-circle" style="color: hsl(204, 86%, 53%);"></i> &nbsp;Efficient Extension:</strong> We introduce an efficient extension of LRP-based attribution that enables scalable construction of cross-layer hidden-state attribution graphs for long-context inputs.</p>
+        <p><strong><i class="fas fa-check-circle" style="color: hsl(204, 86%, 53%);"></i> &nbsp;Systematic Study:</strong> We conduct a systematic interpretability-based failure attribution analysis across common benchmarks, characterizing attribution patterns across datasets, model sizes, and training checkpoints.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FRAMEWORK OVERVIEW ========== -->
+<section class="section" style="padding-top: 0;">
+  <div class="container is-max-desktop">
+    <hr>
+    <div class="content">
+      <h2 class="title is-4 section-title">Framework Overview</h2>
+      <p>We formulate failure analysis as explaining why a model prefers an incorrect token over a correct alternative. The contrastive logit difference between an incorrect target token and a correct contrast token is attributed backward through the transformer stack using <strong>AttnLRP</strong>, producing both input-level attribution heatmaps and cross-layer attribution graphs.</p>
+
+      <div class="pipeline-steps">
+        <div class="pipeline-step">
+          <div class="step-number">1</div>
+          <div class="step-title">Failure Collection</div>
+          <div class="step-desc">Collect failure cases from standard benchmarks (IFEval, GAIA2, MATH, EvalPlus)</div>
+        </div>
+        <div class="pipeline-arrow"><i class="fas fa-arrow-right"></i></div>
+        <div class="pipeline-step">
+          <div class="step-number">2</div>
+          <div class="step-title">Token Pair ID</div>
+          <div class="step-desc">Identify target&ndash;contrast token pairs via semi-automated annotation with strict recovery criterion</div>
+        </div>
+        <div class="pipeline-arrow"><i class="fas fa-arrow-right"></i></div>
+        <div class="pipeline-step">
+          <div class="step-number">3</div>
+          <div class="step-title">Contrastive Attribution</div>
+          <div class="step-desc">Apply AttnLRP to attribute the logit difference to input tokens and internal hidden states</div>
+        </div>
+        <div class="pipeline-arrow"><i class="fas fa-arrow-right"></i></div>
+        <div class="pipeline-step">
+          <div class="step-number">4</div>
+          <div class="step-title">Analysis</div>
+          <div class="step-desc">Analyze failure patterns via heatmaps and attribution graphs at coarse-to-fine granularity</div>
+        </div>
+      </div>
+
+      <p>Our method extends AttnLRP with <strong>batch-packed multi-target backpropagation</strong>, which exploits GPU vectorization to efficiently recover relevance propagation between hidden states across layers, reducing the cost from O(n) to O(&lceil;n/B&rceil;) backward passes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== BENCHMARKS ========== -->
+<section class="section" style="padding-top: 0;">
+  <div class="container is-max-desktop">
+    <hr>
+    <div class="content">
+      <h2 class="title is-4 section-title">Benchmarks &amp; Models</h2>
+      <p>We study failures across four diverse benchmarks, spanning instruction following, agentic tasks, math reasoning, and code generation:</p>
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>Benchmark</th>
+            <th>Target Capability</th>
+            <th>Model</th>
+            <th>Failure Cases (Clean Rate)</th>
+            <th>Avg. Tokens</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>IFEval</strong></td>
+            <td>Instruction following</td>
+            <td>Qwen3-<strong>0.6B</strong>/1.7B/4B</td>
+            <td>265 (20.8%)</td>
+            <td>54</td>
+          </tr>
+          <tr>
+            <td><strong>GAIA2</strong></td>
+            <td>Agentic; long-context</td>
+            <td>Qwen3-<strong>4B</strong></td>
+            <td>300 (17.0%)</td>
+            <td>12,374</td>
+          </tr>
+          <tr>
+            <td><strong>MATH</strong></td>
+            <td>Math reasoning</td>
+            <td>Qwen3-<strong>0.6B</strong></td>
+            <td>91 (40.7%)</td>
+            <td>116</td>
+          </tr>
+          <tr>
+            <td><strong>EvalPlus</strong></td>
+            <td>Code generation</td>
+            <td>Qwen3-<strong>0.6B</strong></td>
+            <td>270 (19.6%)</td>
+            <td>169</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ========== RESULTS ========== -->
+<section class="section" style="padding-top: 0;">
+  <div class="container is-max-desktop">
+    <hr>
+    <div class="content">
+      <h2 class="title is-4 section-title">Results</h2>
+
+      <!-- Result 1 -->
+      <h3 class="title is-5" style="margin-top: 1.5rem;">Attribution Analysis of Incorrect Token Preference</h3>
+      <p>We categorize attribution outcomes into three types: <strong>Manifested by Input Attribution (M-IA)</strong>, <strong>Manifested by Attribution Graph (NC-IA + M-AG)</strong>, and <strong>No Clue from Both (NC-IA+AG)</strong>. For explainable cases, we further identify failure patterns:</p>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0;">
+        <span class="contrib-tag"><i class="fas fa-arrow-down" style="color: hsl(204, 86%, 53%);"></i> &nbsp;Underweight Relevant Tokens (URT)</span>
+        <span class="contrib-tag"><i class="fas fa-arrow-up" style="color: #ff6b6b;"></i> &nbsp;Overweight Irrelevant Tokens (OIT)</span>
+        <span class="contrib-tag"><i class="fas fa-arrows-alt-v" style="color: #e67e22;"></i> &nbsp;URT + OIT</span>
+      </div>
+
+      <div class="figure-container has-text-centered">
+        <img src="./static/figures/evaluation_summary_total.png" alt="Distribution of attribution outcomes and failure patterns across benchmarks" style="max-width: 85%;">
+        <p class="figure-caption"><strong>Figure 1:</strong> Distribution of attribution outcomes (top) and failure patterns (bottom) across benchmarks. IFEval, GAIA2, and EvalPlus show that input attribution alone suffices in the majority of cases. MATH has a larger fraction of unexplained failures requiring finer-grained analysis.</p>
+      </div>
+
+      <div class="figure-container has-text-centered">
+        <img src="./static/figures/examples.png" alt="Examples of input attribution heatmaps" style="max-width: 95%;">
+        <p class="figure-caption"><strong>Figure 2:</strong> Examples of input attribution heatmaps. (a) <strong>URT</strong>: Qwen3-0.6B underweights the instruction token &ldquo;commas&rdquo;. (b) <strong>OIT</strong>: Qwen3-0.6B overweights an irrelevant token &ldquo;(a&rdquo;. (c) <strong>NC-IA</strong>: input attribution alone offers limited explanation. Color intensity shows each token&rsquo;s positive (red) or negative (blue) influence on the target&ndash;contrast preference.</p>
+      </div>
+
+      <!-- Result 2: AG -->
+      <h3 class="title is-5" style="margin-top: 2rem;">Attribution Graph Analysis</h3>
+      <p>For cases where input attribution is insufficient, attribution graphs reveal informative internal dynamics by tracing how relevance propagates across layers:</p>
+
+      <div class="figure-container has-text-centered">
+        <img src="./static/figures/AG_exp_cropped.png" alt="Sample attribution graph" style="max-width: 90%;">
+        <p class="figure-caption"><strong>Figure 3:</strong> Sample ablated attribution graph for a failure case where input attribution alone was insufficient. The graph reveals layer-wise relevance interactions&mdash;the token &ldquo;First&rdquo; accumulates larger cumulative relevance than the correct token &ldquo;&lt;&lt;&rdquo; through critical layers 18&ndash;24, ultimately producing the erroneous output.</p>
+      </div>
+
+      <!-- Result 3: Scaling -->
+      <h3 class="title is-5" style="margin-top: 2rem;">Attribution Shifts with Model Scaling</h3>
+      <p>We investigate whether scaling model size resolves failures and whether such improvements are supported by interpretability evidence.</p>
+
+      <div class="results-grid">
+        <div class="figure-container has-text-centered">
+          <img src="./static/figures/weak_strong_logit_diff.png" alt="Logit difference comparisons across model sizes">
+          <p class="figure-caption"><strong>Figure 4:</strong> Logit difference comparisons between Qwen3-0.6B and larger models. Most points lie below the y=x line, indicating that larger models correct failures in the smaller model.</p>
+        </div>
+        <div class="figure-container has-text-centered">
+          <img src="./static/figures/weak_strong_rel_breakdown.png" alt="Relevance score breakdown across model sizes">
+          <p class="figure-caption"><strong>Figure 5:</strong> Input attribution relevance breakdown by prompt segment. Larger models show increasingly negative relevance, especially in the Instruction segment.</p>
+        </div>
+      </div>
+
+      <!-- Result 4: Training -->
+      <h3 class="title is-5" style="margin-top: 2rem;">Evolution of Failure Attribution Across Training</h3>
+      <p>We analyze how attribution patterns evolve across post-training checkpoints of the Olmo-3-7B-Think model series.</p>
+
+      <div class="results-grid">
+        <div class="figure-container has-text-centered">
+          <img src="./static/figures/checkpoints_logit_diff.png" alt="Evolution of logit differences across training checkpoints">
+          <p class="figure-caption"><strong>Figure 6:</strong> Evolution of logit differences across training checkpoints. Logit differences steadily decrease as training progresses through SFT, DPO, and RLVR stages.</p>
+        </div>
+        <div class="figure-container has-text-centered">
+          <img src="./static/figures/checkpoints_relevance_breakdown.png" alt="Relevance breakdown across training checkpoints">
+          <p class="figure-caption"><strong>Figure 7:</strong> Relevance breakdown across training checkpoints. The most substantial changes occur during early SFT, with DPO further pushing relevance toward more negative values.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== PRACTICAL IMPLICATIONS ========== -->
+<section class="section" style="padding-top: 0;">
+  <div class="container is-max-desktop">
+    <hr>
+    <div class="content">
+      <h2 class="title is-4 section-title">Practical Implications</h2>
+      <div class="columns" style="margin-top: 1rem;">
+        <div class="column">
+          <div class="highlight-box" style="height: 100%;">
+            <h4 style="margin-top: 0;"><i class="fas fa-bullseye" style="color: hsl(204, 86%, 53%);"></i> &nbsp;Targeted Prompt Tuning</h4>
+            <p>Masking a small number of top-attributed input tokens (~2 on average) suffices to flip the model's prediction away from the error token, enabling efficient prompt debugging.</p>
+          </div>
+        </div>
+        <div class="column">
+          <div class="highlight-box" style="height: 100%;">
+            <h4 style="margin-top: 0;"><i class="fas fa-chart-line" style="color: hsl(204, 86%, 53%);"></i> &nbsp;Training Monitoring</h4>
+            <p>Attribution patterns can track how failures evolve during training, revealing whether corrections reflect genuine reasoning improvements.</p>
+          </div>
+        </div>
+        <div class="column">
+          <div class="highlight-box" style="height: 100%;">
+            <h4 style="margin-top: 0;"><i class="fas fa-balance-scale" style="color: hsl(204, 86%, 53%);"></i> &nbsp;Alignment Signals</h4>
+            <p>Attribution scores provide a natural token-importance signal for alignment training, enabling token-level preference optimization (e.g., with DPO).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== KEY FINDINGS ========== -->
+<section class="section" style="padding-top: 0;">
+  <div class="container is-max-desktop">
+    <hr>
+    <div class="content">
+      <h2 class="title is-4 section-title">Key Findings</h2>
+      <div class="highlight-box" style="border-left-color: #48c774;">
+        <p><strong><i class="fas fa-lightbulb" style="color: #48c774;"></i> &nbsp;Finding 1:</strong> Contrastive attribution reveals meaningful failure patterns in the majority of cases, with <em>underweighting relevant tokens (URT)</em> as the dominant failure mode across all benchmarks.</p>
+        <p><strong><i class="fas fa-lightbulb" style="color: #48c774;"></i> &nbsp;Finding 2:</strong> Attribution graphs expose layer-wise relevance dynamics invisible to input-level analysis, revealing how internal biases (e.g., BOS attention sink) can override contextual signals.</p>
+        <p><strong><i class="fas fa-lightbulb" style="color: #48c774;"></i> &nbsp;Finding 3:</strong> Larger models correct failures through systematic, interpretable attribution shifts&mdash;specifically, increased negative relevance on instruction-related tokens.</p>
+        <p><strong><i class="fas fa-lightbulb" style="color: #48c774;"></i> &nbsp;Finding 4:</strong> Training progressively corrects failures through attribution shifts, with the largest changes during early SFT and notable further improvements from DPO.</p>
+        <p><strong><i class="fas fa-exclamation-triangle" style="color: #ff9800;"></i> &nbsp;Limitation:</strong> A non-trivial fraction of failures (especially in math reasoning) remain unexplained at the coarse-grained hidden-state level, highlighting the need for finer-grained neuron-level analysis.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== BIBTEX ========== -->
+<section class="section" style="padding-top: 0;">
+  <div class="container is-max-desktop">
+    <hr>
+    <div class="content" id="BibTeX">
+      <h2 class="title is-4 section-title">BibTeX</h2>
+      <pre><code>@article{tan2025contrastive,
+  title     = {Contrastive Attribution in the Wild: An Interpretability
+               Analysis of LLM Failures on Realistic Benchmarks},
+  author    = {Tan, Rongyuan and Zhang, Jue and Li, Zhuozhao
+               and Lin, Qingwei and Rajmohan, Saravan and Zhang, Dongmei},
+  year      = {2025}
+}</code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered is-size-7">
+      <p>
+        This website template is adapted from the
+        <a href="https://nerfies.github.io/" target="_blank" rel="noopener">Nerfies</a>
+        project page, licensed under
+        <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+      </p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
